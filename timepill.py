@@ -16,7 +16,7 @@ def get_one_page(key):
         option_chrome.add_argument('--headless')
 
         driver = webdriver.Chrome(chrome_options=option_chrome)
-        time.sleep(1)
+        #time.sleep(1)
 
         url = "http://www.timepill.net/"+str(key)
         driver.get(url)
@@ -34,7 +34,7 @@ def get_one_page(key):
     except TimeoutException or WebDriverException:
         return get_one_page()
 
-num = [n*20 for n in range(0,110)]
+num = [n*20 for n in range(0,139)]
 for key in tqdm(num):
     print ("正在爬取{}".format(key))
     get_one_page(key)
