@@ -5,9 +5,7 @@ from selenium.common.exceptions import TimeoutException, WebDriverException
 import pandas as pd
 import numpy as np
 import re
-#position = ["北京","天津","上海","重庆","河北","山西","辽宁","吉林","黑龙江","江苏","浙江","安徽","福建","江西","山东","河南","湖北","湖南","广东","海南","四川","贵州","云南","陕西","甘肃","青海","台湾","内蒙古","广西","西藏","宁夏","新疆","香港","澳门"]
 
-#name,level,hot,address,num=[],[],[],[],[]
 body,name,book,content,bottom,date,name1=[],[],[],[],[],[],[]
 def get_one_page(key):
     try:
@@ -28,13 +26,13 @@ def get_one_page(key):
             except:
                 name1=("")
             name.append(name1)
-            date.append(temp.replace(name1,'')[1:10])
+            date.append(temp.replace(name1,'').split('《')[0][-12:-1])
         driver.quit()
         return
     except TimeoutException or WebDriverException:
         return get_one_page()
 
-num = [n*20 for n in range(0,139)]
+num = [n*20 for n in range(0,2)]
 for key in tqdm(num):
     print ("正在爬取{}".format(key))
     get_one_page(key)
