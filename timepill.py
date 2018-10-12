@@ -32,7 +32,7 @@ def get_one_page(key):
     except TimeoutException or WebDriverException:
         return get_one_page()
 
-num = [n*20 for n in range(0,2)]
+num = [n*20 for n in range(0,150)]
 for key in tqdm(num):
     print ("正在爬取{}".format(key))
     get_one_page(key)
