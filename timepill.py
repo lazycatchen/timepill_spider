@@ -27,17 +27,18 @@ def get_one_page(key):
                 name1=("")
             name.append(name1)
             date.append(temp.replace(name1,'').split('《')[0][-12:-1])
+            book.append(temp.split('\n')[1])
         driver.quit()
         return
     except TimeoutException or WebDriverException:
         return get_one_page()
 
-num = [n*20 for n in range(0,150)]
+num = [n*20 for n in range(0,4)]
 for key in tqdm(num):
     print ("正在爬取{}".format(key))
     get_one_page(key)
 
 
-result = {'date': date, 'name': name}
-result = pd.DataFrame(result, columns=['date', 'name'])
-result.to_csv("result.csv",encoding="utf_8_sig")
+result = {'date': date, 'name': name, 'book':book}
+result = pd.DataFrame(result, columns=['date', 'name', 'book'])
+result.to_csv("result_1.csv",encoding="utf_8_sig")
