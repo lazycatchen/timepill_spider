@@ -1,0 +1,12 @@
+try:
+	    f_stop_text=f_stop.read()
+	finally:
+	    f_stop.close()#关闭资源
+	#将停用词格式化，用\n分开，返回一个列表
+	f_stop_seg_list=f_stop_text.split("\n")
+	#对默认模式分词的进行遍历，去除停用词
+	for myword in listStr.split('/'):
+	    #去除停用词
+	    if not(myword.split()) in f_stop_seg_list and len(myword.strip())>1:
+	        mywordList.append(myword)
+	return ' '.join(listStr)

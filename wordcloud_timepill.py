@@ -33,31 +33,20 @@ d=path.dirname(__file__)
 stopwords_path = d+ '/static/stopwords.txt'
 # 评论词云分析
 def jiebaclearText(text):
-    #定义一个空的列表，将去除的停用词的分词保存
-    mywordList=[]
-    re.sub('[！，em。.…《》#—“”‘’ ？\r\n]', '', text)
-    #进行分词
-    seg_list=jieba.cut(text,cut_all=False)
-    #将一个generator的内容用/连接
-    listStr='/'.join(seg_list)
-    listStr = listStr.replace("class","")
-    listStr = listStr.replace("span", "")
-    listStr = listStr.replace("1", "")
-    #打开停用词表
-    f_stop=open(stopwords_path,encoding="utf8")
-    #读取
-    try:
-        f_stop_text=f_stop.read()
-    finally:
-        f_stop.close()#关闭资源
-    #将停用词格式化，用\n分开，返回一个列表
-    f_stop_seg_list=f_stop_text.split("\n")
-    #对默认模式分词的进行遍历，去除停用词
-    for myword in listStr.split('/'):
-        #去除停用词
-        if not(myword.split()) in f_stop_seg_list and len(myword.strip())>1:
-            mywordList.append(myword)
-    return ' '.join(mywordList)
+	mywordList=[]
+	text_char=' '.join(text)
+	text_char=re.sub('[！，em。.…《》#—“”‘’ ？\r\n]', '',text_char)
+
+	seg_list=jieba.cut(text_char,cut_all=False)
+	#将一个generator的内容用/连接
+	listStr='/'.join(seg_list)
+	listStr = listStr.replace("class","")
+	listStr = listStr.replace("span", "")
+	listStr = listStr.replace("1", "")
+	#打开停用词表
+	#f_stop=open(stopwords_path,encoding="utf8")
+	#读取
+	return ' '.join(listStr)
 
 # 生成词云图
 def make_wordcloud(text1):
@@ -86,6 +75,6 @@ def make_wordcloud(text1):
 	# 保存云图
 	wc.to_file(d+r"/picture/word_cloud.png")
 content = read_csv()
-jiebaclearText(content)
-make_wordcloud(content)
+x=jiebaclearText(content)
+make_wordcloud(x)
 #word_cloud(content)
