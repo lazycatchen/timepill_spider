@@ -20,7 +20,7 @@ def read_csv():
 
 import re, jieba
 #词云生成工具
-from wordcloud import WordCloud
+from wordcloud import WordCloud,ImageColorGenerator
 #需要对中文进行处理
 import matplotlib.font_manager as fm
 from pylab import *
@@ -44,14 +44,25 @@ def jiebaclearText(text):
 	listStr = listStr.replace("span", "")
 	listStr = listStr.replace("1", "")
 	#打开停用词表
-	#f_stop=open(stopwords_path,encoding="utf8")
+	f_stop=open(stopwords_path,encoding="utf8")
 	#读取
-	return ' '.join(listStr)
+	try:
+         f_stop_text=f_stop.read()
+	finally:
+	     f_stop.close()#关闭资源
+	#将停用词格式化，用\n分开，返回一个列表
+	f_stop_seg_list=f_stop_text.split("\n")
+	#对默认模式分词的进行遍历，去除停用词
+	for myword in listStr.split('/'):
+	    #去除停用词
+	    if not(myword.split()) in f_stop_seg_list and len(myword.strip())>1:
+	        mywordList.append(myword)
+	return ' '.join(mywordList)
 
 # 生成词云图
 def make_wordcloud(text1):
 	text1 = text1.replace("", "")
-	bg = plt.imread(d + r"/static/znn1.jpg")
+	bg = plt.imread(d + r"/static/cat1.jpg")
 	# 生成
 	wc = WordCloud(# FFFAE3
 		background_color="white",  # 设置背景为白色，默认为黑色
