@@ -2,13 +2,13 @@ import pandas as pd
 import numpy as np
 import re
 import matplotlib.pyplot as plt
-data = pd.read_csv("result.csv")
+data = pd.read_csv("result_1.csv")
 data = data.fillna(0)
 data = data.drop(columns=['Unnamed: 0'])
 time,time_rusult=[],[]
 timetemp=10000000
 for i in range(len(data)):
-    timestr=data.loc[i].date
+    timestr=data.loc[i].date  #按时间顺序排序，从0到1440分
     time_num=re.findall(r"\d+\.?\d*",timestr)
     try:
          num1=int(time_num[0])
@@ -36,7 +36,7 @@ for i in range(len(data)):
     time_rusult.append(time)
 
 hour=[]
-for ix in range(24):
+for ix in range(24):#统计24小时，小时内频数
     h1=0
     for ii in  time_rusult:
         if (ix*60+1)<ii and ii<=(ix*60+61):
@@ -49,5 +49,5 @@ plt.plot(hour,color='k')
 plt.grid(b=True, which='major', axis='y')
 plt.ylabel(u"频数")
 plt.xlabel(u"时间/h")
-plt.title(u"胶囊发帖量统计/截止20：50")
+plt.title(u"胶囊发帖量统计/截止22：30")
 plt.show()

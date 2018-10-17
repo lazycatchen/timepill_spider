@@ -6,7 +6,7 @@ import pandas as pd
 import numpy as np
 import re
 
-body,name,book,content,bottom,date,name1=[],[],[],[],[],[],[]
+name,book,date,name1=[],[],[],[]
 def get_one_page(key):
     try:
       #打开浏览器窗口
@@ -33,7 +33,7 @@ def get_one_page(key):
     except TimeoutException or WebDriverException:
         return get_one_page()
 
-num = [n*20 for n in range(0,4)]
+num = [n*20 for n in range(0,167)]  #爬取页数，为避免实时刷新，页数+10
 for key in tqdm(num):
     print ("正在爬取{}".format(key))
     get_one_page(key)
