@@ -1,13 +1,16 @@
 import csv
 import pandas as pd
-time = []
-nickName = []
-gender = []
-cityName = []
-userLevel = []
-score = []
 content = []
-
+import re, jieba
+#词云生成工具
+from wordcloud import WordCloud,ImageColorGenerator
+#需要对中文进行处理
+import matplotlib.font_manager as fm
+from pylab import *
+mpl.rcParams['font.sans-serif'] = ['SimHei']
+from os import path
+d=path.dirname(__file__)
+stopwords_path = d+ '/static/stopwords.txt'
 # 读数据
 def read_csv():
 	data = pd.read_csv("result_1.csv")
@@ -18,25 +21,11 @@ def read_csv():
 		content.append(contentstr)
 	return content
 
-import re, jieba
-#词云生成工具
-from wordcloud import WordCloud,ImageColorGenerator
-#需要对中文进行处理
-import matplotlib.font_manager as fm
-from pylab import *
-mpl.rcParams['font.sans-serif'] = ['SimHei']
-from os import path
 
-d=path.dirname(__file__)
-
-#stopwords_path = d + '/static/stopwords.txt'
-stopwords_path = d+ '/static/stopwords.txt'
-# 评论词云分析
 def jiebaclearText(text):
 	mywordList=[]
 	text_char=' '.join(text)
 	text_char=re.sub('[！，em。.…《》#—“”‘’ ？\r\n]', '',text_char)
-
 	seg_list=jieba.cut(text_char,cut_all=False)
 	#将一个generator的内容用/连接
 	listStr='/'.join(seg_list)
@@ -85,7 +74,6 @@ def make_wordcloud(text1):
 	# 画云图，显示
 	# 保存云图
 	wc.to_file(d+r"/picture/word_cloud.png")
-content = read_csv()
-x=jiebaclearText(content)
-make_wordcloud(x)
-#word_cloud(content)
+content = read_csv()  #读取CSV
+x=jiebaclearText(content) #结巴分词
+make_wordcloud(x)#词云图
