@@ -1,5 +1,7 @@
 import csv
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 content = []
 import re, jieba
 #词云生成工具
@@ -12,14 +14,49 @@ from os import path
 d=path.dirname(__file__)
 stopwords_path = d+ '/static/stopwords.txt'
 # 读数据
+
+
 def read_csv():
-	data = pd.read_csv("result_1.csv")
-	data = data.fillna(0)
-	data = data.drop(columns=['Unnamed: 0'])
-	for i in range(len(data)):
-		contentstr=data.loc[i].book
-		content.append(contentstr)
-	return content
+    data = pd.read_csv("result_1.csv")
+    data = data.fillna(0)
+    data = data.drop(columns=['Unnamed: 0'])
+    timetemp=int(10000)
+    time_rusult,content_result=[],[]
+#try:
+    for i in range(len(data)):
+        timestr=data.loc[i].date  #按时间顺序排序，从0到1440分	data = pd.read_csv("result_1.csv")
+       #contentstr=data.loc[i].book
+        time_num=re.findall(r"\d+\.?\d*",timestr)
+        num1=int(time_num[0])
+        num2=int(time_num[1])
+        num3=num2
+        try:
+            if 'a' in timestr:
+                if num1==12:
+                     time=num2
+                else:
+                    time=num1*60+num2
+            elif 'p' in timestr:
+                if num1==12:
+                    time=num1*60+num2
+                else:
+                    time=(num1+12)*60+num2
+
+            if time<=timetemp and time<2000:
+                timetemp=time
+                content_result.append(data.loc[i].book)
+            else:
+                continue
+        except:
+            print('异常')
+    return content_result
+      # except:
+         #   print('异常')
+    #time_rusult.append(time)
+	#for i in range(len(data)):
+	#	contentstr=data.loc[i].book
+	#	content.append(contentstr)
+    #return content
 
 
 def jiebaclearText(text):
@@ -73,7 +110,7 @@ def make_wordcloud(text1):
 	plt.axis("off")
 	# 画云图，显示
 	# 保存云图
-	wc.to_file(d+r"/picture/word_cloud.png")
+	wc.to_file(d+r"/picture/word_cloud1.png")
 content = read_csv()  #读取CSV
 x=jiebaclearText(content) #结巴分词
 make_wordcloud(x)#词云图
